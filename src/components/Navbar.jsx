@@ -21,6 +21,8 @@ const Navbar = () => {
                         <img className="h-10 w-10 m-2" src={logo} alt="logo" />
                         <span className="text-xl tracking-tight">MasterAI</span>
                     </div>
+
+                    {/* Desktop Nav Items */}
                     <ul className="hidden lg:flex ml-5 space-x-12">
                         {/* Render navigation items only if logged in */}
                         {state.isLoggedIn && navItems.map((item, index) => (
@@ -29,42 +31,47 @@ const Navbar = () => {
                             </li>
                         ))}
                     </ul>
+
+                    {/* Desktop SignIn/SignOut Button */}
                     <div className="hidden lg:flex justify-center space-x-12 items-center">
-                        {/* Conditional rendering for SignIn or SignOut */}
                         {state.isLoggedIn ? (
                             <button onClick={logout} className="py-2 px-3 border rounded-md">Sign Out</button>
                         ) : (
                             <Link to="/signin" className="py-2 px-3 border rounded-md">Sign In</Link>
                         )}
                     </div>
+
+                    {/* Mobile Menu Button */}
                     <div className="lg:hidden md:flex flex-cols justify-end">
                         <button onClick={toggleNavbar}>
                             {mobileDrawerOpen ? <X /> : <Menu />}
                         </button>
                     </div>
                 </div>
+
+                {/* Mobile Drawer */}
                 {mobileDrawerOpen && (
                     <div className="fixed right-0 z-20 bg-neutral-900 w-full p-12 flex flex-col justify-center items-center lg:hidden">
-                        <ul>
+                        <ul className="space-y-6">
+                            {/* Mobile Nav Items */}
                             {state.isLoggedIn ? (
-                                navItems.map((item, index) => (
-                                    <li key={index} className="py-4">
-                                        <Link to={item.href}>{item.label}</Link>
+                                <>
+                                    {navItems.map((item, index) => (
+                                        <li key={index}>
+                                            <Link to={item.href} onClick={toggleNavbar}>{item.label}</Link>
+                                        </li>
+                                    ))}
+                                    {/* Sign Out Button for Mobile */}
+                                    <li>
+                                        <button onClick={() => { logout(); toggleNavbar(); }} className="py-2 px-3 border rounded-md">Sign Out</button>
                                     </li>
-                                ))
+                                </>
                             ) : (
-                                <li className="py-4">
-                                    <Link to="/signin">Sign In</Link>
+                                <li>
+                                    <Link to="/signin" onClick={toggleNavbar}>Sign In</Link>
                                 </li>
                             )}
                         </ul>
-                        <div className='flex space-x-6'>
-                            {state.isLoggedIn ? (
-                                <button onClick={logout} className='py-2 px-3 border rounded-md'>Sign Out</button>
-                            ) : (
-                                <Link to="/signin" className='py-2 px-3 border rounded-md'>Sign In</Link>
-                            )}
-                        </div>
                     </div>
                 )}
             </div>
