@@ -6,9 +6,10 @@ import FeatureSection from './components/FeatureSection';
 import WorkFlow from './components/WorkFlow';
 import Price from './components/Price';
 import Testimonials from './components/Testimonials';
+import About from './components/About'; // Import About Component
 import FooterSection from './components/FooterSection';
-import { AuthContext, ContextProvider } from './contexts/AuthContext'; // Import AuthContext and ContextProvider
-import SignIn from './components/SignIn'; // Import SignIn Component
+import { AuthContext, ContextProvider } from './contexts/AuthContext';
+import SignIn from './components/SignIn';
 
 // ProtectedRoute component to check authentication before rendering protected pages
 const ProtectedRoute = ({ element }) => {
@@ -25,13 +26,14 @@ function App() {
           <Routes>
             {/* Public routes */}
             <Route path="/signin" element={<SignIn />} />
-          
+
             {/* Protected routes */}
             <Route path="/" element={<ProtectedRoute element={<HeroSection />} />} />
             <Route path="/features" element={<ProtectedRoute element={<FeatureSection />} />} />
             <Route path="/workflow" element={<ProtectedRoute element={<WorkFlow />} />} />
             <Route path="/price" element={<ProtectedRoute element={<Price />} />} />
             <Route path="/testimonials" element={<ProtectedRoute element={<Testimonials />} />} />
+            <Route path="/about" element={<ProtectedRoute element={<About />} />} /> {/* Add About route */}
           </Routes>
         </div>
         <FooterSection />

@@ -21,7 +21,7 @@ const Navbar = () => {
                         <img className="h-10 w-10 m-2" src={logo} alt="logo" />
                         <span className="text-xl tracking-tight">MasterAI</span>
                     </div>
-                    <ul className="hidden lg:flex ml-14 space-x-12">
+                    <ul className="hidden lg:flex ml-5 space-x-12">
                         {/* Render navigation items only if logged in */}
                         {state.isLoggedIn && navItems.map((item, index) => (
                             <li key={index}>
@@ -71,4 +71,5 @@ const Navbar = () => {
         </nav>
     );
 }
+
 export default Navbar;

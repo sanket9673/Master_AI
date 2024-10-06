@@ -18,6 +18,7 @@ export const navItems = [
   { href: "/workflow", label: "Workflow" },
   { href: "/price", label: "Price" },
   { href: "/testimonials", label: "Testimonials" },
+  { label: 'About', href: '/about' },
 ];
 
 export const testimonials = [
