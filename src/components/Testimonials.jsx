@@ -19,7 +19,6 @@ const Testimonials = () => {
                             </span>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
             ))}
