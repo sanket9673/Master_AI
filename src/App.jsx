@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
@@ -7,22 +7,36 @@ import WorkFlow from './components/WorkFlow';
 import Price from './components/Price';
 import Testimonials from './components/Testimonials';
 import FooterSection from './components/FooterSection';
+import { AuthContext, ContextProvider } from './contexts/AuthContext'; // Import AuthContext and ContextProvider
+import SignIn from './components/SignIn'; // Import SignIn Component
+
+// ProtectedRoute component to check authentication before rendering protected pages
+const ProtectedRoute = ({ element }) => {
+  const { state } = useContext(AuthContext);
+  return state.isLoggedIn ? element : <Navigate to="/signin" />;
+};
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <div className="max-w-7xl mx-auto pt-20 px-6">
-        <Routes>
-          <Route path="/" element={<HeroSection />} />
-          <Route path="/features" element={<FeatureSection />} />
-          <Route path="/workflow" element={<WorkFlow />} />
-          <Route path="/price" element={<Price />} />
-          <Route path="/testimonials" element={<Testimonials />} />
-        </Routes>
-      </div>
-      <FooterSection />
-    </Router>
+    <ContextProvider>
+      <Router>
+        <Navbar />
+        <div className="max-w-7xl mx-auto pt-20 px-6">
+          <Routes>
+            {/* Public routes */}
+            <Route path="/signin" element={<SignIn />} />
+          
+            {/* Protected routes */}
+            <Route path="/" element={<ProtectedRoute element={<HeroSection />} />} />
+            <Route path="/features" element={<ProtectedRoute element={<FeatureSection />} />} />
+            <Route path="/workflow" element={<ProtectedRoute element={<WorkFlow />} />} />
+            <Route path="/price" element={<ProtectedRoute element={<Price />} />} />
+            <Route path="/testimonials" element={<ProtectedRoute element={<Testimonials />} />} />
+          </Routes>
+        </div>
+        <FooterSection />
+      </Router>
+    </ContextProvider>
   );
 }
 

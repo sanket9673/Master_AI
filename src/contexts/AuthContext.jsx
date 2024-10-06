@@ -1,62 +1,60 @@
 import React from 'react';
 import { useSetState } from 'react-use';
 
-export const AuthContext = React.createContext(null);
-
 const initialState = {
   isLoggedIn: false,
   isLoginPending: false,
-  loginError: null
-}
+  loginError: null,
+};
 
-export const ContextProvider = props => {
+export const AuthContext = React.createContext(null);
+
+export const ContextProvider = (props) => {
   const [state, setState] = useSetState(initialState);
 
-  const setLoginPending = (isLoginPending) => setState({isLoginPending});
-  const setLoginSuccess = (isLoggedIn) => setState({isLoggedIn});
-  const setLoginError = (loginError) => setState({loginError});
+  const setLoginPending = (isLoginPending) => setState({ isLoginPending });
+  const setLoginSuccess = (isLoggedIn, username) => setState({ isLoggedIn, username }); // Pass username
+  const setLoginError = (loginError) => setState({ loginError });
 
-  const login = (email, password) => {
+  const login = (email, password, callback) => {
     setLoginPending(true);
     setLoginSuccess(false);
     setLoginError(null);
 
-    fetchLogin( email, password, error => {
+    // Simulate a login request
+    fetchLogin(email, password, (error) => {
       setLoginPending(false);
 
       if (!error) {
-        setLoginSuccess(true);
+        setLoginSuccess(true, email); // Use email as username for demo
+        if (callback) callback();  // Navigate on success
       } else {
         setLoginError(error);
       }
-    })
-  }
+    });
+  };
 
-  const logout = () => {
-    setLoginPending(false);
-    setLoginSuccess(false);
-    setLoginError(null);
-  }
+  const logout = (callback) => {
+    setState(initialState); // Reset to initial state
+    if (callback) callback(); // Callback to navigate after logout
+  };
 
   return (
-    <AuthContext.Provider
-      value={{
-        state,
-        login,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ state, login, logout }}>
       {props.children}
     </AuthContext.Provider>
   );
 };
 
-// fake login
-const fetchLogin = (email, password, callback) => 
+// Simulated login function
+const fetchLogin = (email, password, callback) => {
   setTimeout(() => {
     if (email === 'admin' && password === 'admin') {
-      return callback(null);
+      return callback(null);  // success
     } else {
-      return callback(new Error('Invalid email and password'));
+      return callback(new Error('Invalid email and password'));  // failure
     }
   }, 1000);
+};
+
+export default AuthContext; 
