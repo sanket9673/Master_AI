@@ -17,7 +17,7 @@ const SignIn = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-60">
+        <div className="flex justify-center items-center min-h-60 ml-10">
             <form onSubmit={handleSubmit} className="bg-neutral-800 p-6 rounded-lg shadow-md">
                 <h2 className="text-2xl mb-4">Sign In</h2>
                 <input
